@@ -1,0 +1,2 @@
+rootProject.name = "ParkingBnB_Proyecto"
+include ':app'

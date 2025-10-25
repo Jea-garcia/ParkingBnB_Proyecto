@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center_horizontal"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:text="Registrar Vehículo"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#2E7D32"
+        android:layout_marginBottom="24dp" />
+
+    <EditText
+        android:id="@+id/txtPatente"
+        android:hint="Patente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/txtModelo"
+        android:hint="Modelo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/txtColor"
+        android:hint="Color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:id="@+id/btnGuardar"
+        android:text="Guardar Auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#2E7D32"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>
