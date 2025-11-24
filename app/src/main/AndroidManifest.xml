@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.parkingbnb_proyecto">
+
+    <!-- Permiso obligatorio para consumir APIs REST -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -7,12 +12,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ParkingBnB_Proyecto">
-        <activity android:name=".MainActivity">
+
+        <!-- Actividad para registrar autos -->
+        <activity
+            android:name=".ui.AddAutoActivity"
+            android:exported="true" />
+
+        <!-- Actividad para listar autos desde la API -->
+        <activity
+            android:name=".ui.ListaAutosActivity"
+            android:exported="false" />
+
+        <!-- Actividad principal (pantalla de login) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
+
 </manifest>

@@ -3,8 +3,6 @@ package com.example.parkingbnb_proyecto
 import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
-import android.os.Parcel
-import android.os.Parcelable
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -12,10 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.parkingbnb_proyecto.models.DBHelper
 import com.example.parkingbnb_proyecto.ui.AddAutoActivity
 
-class MainActivity() : AppCompatActivity(), Parcelable {
-
-    constructor(parcel: Parcel) : this() {
-    }
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,9 +24,21 @@ class MainActivity() : AppCompatActivity(), Parcelable {
         val db = dbHelper.readableDatabase
 
         btnLogin.setOnClickListener {
-            val usuario = txtUsuario.text.toString()
-            val contrasena = txtContrasena.text.toString()
 
+            val usuario = txtUsuario.text.toString().trim()
+            val contrasena = txtContrasena.text.toString().trim()
+
+            // Validaciones básicas
+            if (usuario.isEmpty()) {
+                txtUsuario.error = "Ingrese usuario"
+                return@setOnClickListener
+            }
+            if (contrasena.isEmpty()) {
+                txtContrasena.error = "Ingrese contraseña"
+                return@setOnClickListener
+            }
+
+            // Consulta SQL
             val cursor: Cursor = db.rawQuery(
                 "SELECT * FROM usuarios WHERE usuario = ? AND contrasena = ?",
                 arrayOf(usuario, contrasena)
@@ -39,31 +46,16 @@ class MainActivity() : AppCompatActivity(), Parcelable {
 
             if (cursor.moveToFirst()) {
                 Toast.makeText(this, "Inicio exitoso", Toast.LENGTH_SHORT).show()
+
+                // Ir a registrar autos
                 val intent = Intent(this, AddAutoActivity::class.java)
                 startActivity(intent)
+
             } else {
                 Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
             }
 
             cursor.close()
-        }
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<MainActivity> {
-        override fun createFromParcel(parcel: Parcel): MainActivity {
-            return MainActivity(parcel)
-        }
-
-        override fun newArray(size: Int): Array<MainActivity?> {
-            return arrayOfNulls(size)
         }
     }
 }

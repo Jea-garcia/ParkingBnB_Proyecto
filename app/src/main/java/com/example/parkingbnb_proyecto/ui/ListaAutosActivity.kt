@@ -1,46 +1,64 @@
 package com.example.parkingbnb_proyecto.ui
 
-import android.database.Cursor
+import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.ListView
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.parkingbnb_proyecto.R
-import com.example.parkingbnb_proyecto.models.DBHelper
+import com.example.parkingbnb_proyecto.data.model.Auto
+import com.example.parkingbnb_proyecto.data.repository.AutoRepository
+import com.example.parkingbnb_proyecto.ui.adapter.AutoAdapter
+import com.example.parkingbnb_proyecto.MainActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ListaAutosActivity : AppCompatActivity() {
+
+    private lateinit var recyclerView: RecyclerView
+    private val repository = AutoRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_autos)
 
-        val listView = findViewById<ListView>(R.id.listAutos)
-        val dbHelper = DBHelper(this)
-        val db = dbHelper.readableDatabase
+        recyclerView = findViewById(R.id.recyclerAutos)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        try {
-            val cursor: Cursor = db.rawQuery("SELECT * FROM autos", null)
-            val lista = mutableListOf<String>()
+        // Cargar datos desde la API REST
+        cargarAutos()
 
-            while (cursor.moveToNext()) {
-                val patente = cursor.getString(cursor.getColumnIndexOrThrow("patente"))
-                val modelo = cursor.getString(cursor.getColumnIndexOrThrow("modelo"))
-                val color = cursor.getString(cursor.getColumnIndexOrThrow("color"))
-                lista.add("🚗 $patente - $modelo ($color)")
-            }
-
-            cursor.close()
-            db.close()
-
-            if (lista.isEmpty()) {
-                Toast.makeText(this, "No hay autos registrados aún", Toast.LENGTH_SHORT).show()
-            }
-
-            listView.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, lista)
-        } catch (e: Exception) {
-            Toast.makeText(this, "Error al cargar los autos", Toast.LENGTH_SHORT).show()
-            e.printStackTrace()
+        // 🔹 Volver directamente al login (no a AddAutoActivity)
+        val btnVolver = findViewById<Button>(R.id.btnVolver)
+        btnVolver.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
         }
+    }
+
+    private fun cargarAutos() {
+        val call = repository.obtenerAutos()
+
+        call.enqueue(object : Callback<List<Auto>> {
+            override fun onResponse(call: Call<List<Auto>>, response: Response<List<Auto>>) {
+                if (response.isSuccessful) {
+                    val autos = response.body() ?: emptyList()
+                    recyclerView.adapter = AutoAdapter(autos)
+                    Toast.makeText(this@ListaAutosActivity, "Datos cargados desde API", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@ListaAutosActivity,
+                        "Error al obtener los datos: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Auto>>, t: Throwable) {
+                Toast.makeText(this@ListaAutosActivity,
+                    "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 }

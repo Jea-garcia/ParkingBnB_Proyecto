@@ -1,6 +1,7 @@
 package com.example.parkingbnb_proyecto.ui
 
 import android.content.ContentValues
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -22,11 +23,12 @@ class AddAutoActivity : AppCompatActivity() {
         val txtModelo = findViewById<EditText>(R.id.txtModelo)
         val txtColor = findViewById<EditText>(R.id.txtColor)
         val btnGuardar = findViewById<Button>(R.id.btnGuardar)
+        val btnVerLista = findViewById<Button>(R.id.btnVerLista)
 
         btnGuardar.setOnClickListener {
-            val patente = txtPatente.text.toString()
-            val modelo = txtModelo.text.toString()
-            val color = txtColor.text.toString()
+            val patente = txtPatente.text.toString().trim()
+            val modelo = txtModelo.text.toString().trim()
+            val color = txtColor.text.toString().trim()
 
             if (patente.isEmpty() || modelo.isEmpty() || color.isEmpty()) {
                 Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show()
@@ -42,13 +44,17 @@ class AddAutoActivity : AppCompatActivity() {
             val resultado = db.insert("autos", null, valores)
 
             if (resultado != -1L) {
-                Toast.makeText(this, "Vehículo registrado correctamente", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Vehículo registrado", Toast.LENGTH_SHORT).show()
                 txtPatente.text.clear()
                 txtModelo.text.clear()
                 txtColor.text.clear()
             } else {
-                Toast.makeText(this, "Error al registrar el vehículo", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error al registrar", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        btnVerLista.setOnClickListener {
+            startActivity(Intent(this, ListaAutosActivity::class.java))
         }
     }
 }
