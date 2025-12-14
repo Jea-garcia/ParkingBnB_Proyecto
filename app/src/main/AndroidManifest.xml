@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.parkingbnb_proyecto">
 
-    <!-- Permiso obligatorio para consumir APIs REST -->
+    <!-- Permiso para consumir APIs REST -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,17 +13,32 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParkingBnB_Proyecto">
 
-        <!-- Actividad para registrar autos -->
+        <!-- HOME (menú principal después del login) -->
+        <activity
+            android:name=".ui.HomeActivity"
+            android:exported="false" />
+
+        <!-- Registrar autos (SQLite) -->
         <activity
             android:name=".ui.AddAutoActivity"
-            android:exported="true" />
+            android:exported="false" />
 
-        <!-- Actividad para listar autos desde la API -->
+        <!-- Listar autos desde API (Retrofit) -->
         <activity
             android:name=".ui.ListaAutosActivity"
             android:exported="false" />
 
-        <!-- Actividad principal (pantalla de login) -->
+        <!-- Listar autos agregados manualmente (SQLite) -->
+        <activity
+            android:name=".ui.ListaAutosLocalesActivity"
+            android:exported="false" />
+
+        <!-- Agregar Usuario (solo admin) -->
+        <activity
+            android:name=".ui.AgregarUsuarioActivity"
+            android:exported="false" />
+
+        <!-- LOGIN (pantalla inicial) -->
         <activity
             android:name=".MainActivity"
             android:exported="true">

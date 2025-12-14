@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">ParkingBnB_Proyecto</string>
+    <string name="app_name">ParkingBnB</string>
+
+    <!-- Login -->
+    <string name="login_title">Iniciar sesión</string>
+    <string name="usuario">Usuario</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="btn_login">Ingresar</string>
+
+    <!-- Home -->
+    <string name="home_title">Menú principal</string>
+    <string name="btn_agregar_auto">Agregar auto</string>
+    <string name="btn_listar_api">Autos API</string>
+    <string name="btn_autos_locales">Autos manuales</string>
+    <string name="btn_cerrar_sesion">Cerrar sesión</string>
+
+    <!-- Autos -->
+    <string name="titulo_autos_locales">Autos agregados manualmente</string>
+    <string name="btn_volver">Volver</string>
 </resources>

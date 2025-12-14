@@ -1,6 +1,5 @@
 package com.example.parkingbnb_proyecto.ui
 
-import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -17,15 +16,18 @@ class AddAutoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_auto)
 
         val dbHelper = DBHelper(this)
-        val db = dbHelper.writableDatabase
 
         val txtPatente = findViewById<EditText>(R.id.txtPatente)
         val txtModelo = findViewById<EditText>(R.id.txtModelo)
         val txtColor = findViewById<EditText>(R.id.txtColor)
+
         val btnGuardar = findViewById<Button>(R.id.btnGuardar)
         val btnVerLista = findViewById<Button>(R.id.btnVerLista)
+        val btnVolverHome = findViewById<Button>(R.id.btnVolverHome)
 
+        // ✅ GUARDAR AUTO CON HORA DE ENTRADA AUTOMÁTICA
         btnGuardar.setOnClickListener {
+
             val patente = txtPatente.text.toString().trim()
             val modelo = txtModelo.text.toString().trim()
             val color = txtColor.text.toString().trim()
@@ -35,26 +37,26 @@ class AddAutoActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val valores = ContentValues().apply {
-                put("patente", patente)
-                put("modelo", modelo)
-                put("color", color)
-            }
+            // 👉 Usa DBHelper (hora en millis)
+            dbHelper.insertarAuto(patente, modelo, color)
 
-            val resultado = db.insert("autos", null, valores)
+            Toast.makeText(
+                this,
+                "Auto ingresado correctamente\nHora de entrada registrada",
+                Toast.LENGTH_SHORT
+            ).show()
 
-            if (resultado != -1L) {
-                Toast.makeText(this, "Vehículo registrado", Toast.LENGTH_SHORT).show()
-                txtPatente.text.clear()
-                txtModelo.text.clear()
-                txtColor.text.clear()
-            } else {
-                Toast.makeText(this, "Error al registrar", Toast.LENGTH_SHORT).show()
-            }
+            txtPatente.text.clear()
+            txtModelo.text.clear()
+            txtColor.text.clear()
         }
 
         btnVerLista.setOnClickListener {
-            startActivity(Intent(this, ListaAutosActivity::class.java))
+            startActivity(Intent(this, ListaAutosLocalesActivity::class.java))
+        }
+
+        btnVolverHome.setOnClickListener {
+            finish()
         }
     }
 }

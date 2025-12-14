@@ -4,52 +4,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light">
+    android:background="@android:color/white">
 
-    <!-- Toolbar -->
-    <include
-        android:id="@+id/includeToolbar"
-        layout="@layout/toolbar_main"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Título -->
     <TextView
-        android:id="@+id/txtTitleLista"
+        android:id="@+id/txtTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lista de Vehículos"
-        android:textSize="26sp"
+        android:text="Autos agregados manualmente"
+        android:textSize="22sp"
         android:textStyle="bold"
-        android:textColor="@color/text_dark"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintTop_toBottomOf="@id/includeToolbar"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerAutos"
+        android:id="@+id/recyclerAutosLocales"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/txtTitleLista"
+        app:layout_constraintTop_toBottomOf="@id/txtTitulo"
         app:layout_constraintBottom_toTopOf="@id/btnVolverHome"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Botón volver al Home -->
     <Button
         android:id="@+id/btnVolverHome"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Volver al Home"
         android:layout_margin="16dp"
-        android:padding="14dp"
-        android:backgroundTint="@color/gray_light"
-        android:textColor="@color/text_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

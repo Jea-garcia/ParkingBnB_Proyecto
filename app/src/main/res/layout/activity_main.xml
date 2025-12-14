@@ -59,7 +59,7 @@
                 app:startIconDrawable="@android:drawable/ic_menu_myplaces">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtUsuario"
+                    android:id="@+id/edtUsuario"
                     android:hint="Usuario"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -73,7 +73,7 @@
                 app:startIconDrawable="@android:drawable/ic_lock_lock">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtContrasena"
+                    android:id="@+id/edtContrasena"
                     android:hint="Contraseña"
                     android:inputType="textPassword"
                     android:layout_width="match_parent"

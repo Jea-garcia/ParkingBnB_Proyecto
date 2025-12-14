@@ -1,14 +1,14 @@
 package com.example.parkingbnb_proyecto
 
 import android.content.Intent
-import android.database.Cursor
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.parkingbnb_proyecto.models.DBHelper
-import com.example.parkingbnb_proyecto.ui.AddAutoActivity
+import com.example.parkingbnb_proyecto.models.Usuario
+import com.example.parkingbnb_proyecto.ui.HomeActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,46 +16,45 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val txtUsuario = findViewById<EditText>(R.id.txtUsuario)
-        val txtContrasena = findViewById<EditText>(R.id.txtContrasena)
+        // Referencias a vistas
+        val edtUsuario = findViewById<EditText>(R.id.edtUsuario)
+        val edtContrasena = findViewById<EditText>(R.id.edtContrasena)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
 
         val dbHelper = DBHelper(this)
-        val db = dbHelper.readableDatabase
 
         btnLogin.setOnClickListener {
+            val usuarioInput = edtUsuario.text.toString().trim()
+            val contrasenaInput = edtContrasena.text.toString().trim()
 
-            val usuario = txtUsuario.text.toString().trim()
-            val contrasena = txtContrasena.text.toString().trim()
-
-            // Validaciones básicas
-            if (usuario.isEmpty()) {
-                txtUsuario.error = "Ingrese usuario"
-                return@setOnClickListener
-            }
-            if (contrasena.isEmpty()) {
-                txtContrasena.error = "Ingrese contraseña"
+            if (usuarioInput.isEmpty()) {
+                edtUsuario.error = "Ingrese usuario"
                 return@setOnClickListener
             }
 
-            // Consulta SQL
-            val cursor: Cursor = db.rawQuery(
-                "SELECT * FROM usuarios WHERE usuario = ? AND contrasena = ?",
-                arrayOf(usuario, contrasena)
-            )
+            if (contrasenaInput.isEmpty()) {
+                edtContrasena.error = "Ingrese contraseña"
+                return@setOnClickListener
+            }
 
-            if (cursor.moveToFirst()) {
-                Toast.makeText(this, "Inicio exitoso", Toast.LENGTH_SHORT).show()
+            val usuario: Usuario? = dbHelper.obtenerUsuario(usuarioInput)
 
-                // Ir a registrar autos
-                val intent = Intent(this, AddAutoActivity::class.java)
-                startActivity(intent)
-
-            } else {
+            if (usuario == null || usuario.contrasena != contrasenaInput) {
                 Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
 
-            cursor.close()
+            // Guardar rol en SharedPreferences
+            val sharedPref = getSharedPreferences("MiAppPrefs", MODE_PRIVATE)
+            with(sharedPref.edit()) {
+                putString("rol", usuario.rol)
+                apply()
+            }
+
+            // Redirigir a HomeActivity
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 }
